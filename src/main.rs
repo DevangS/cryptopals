@@ -1,9 +1,9 @@
 extern crate data_encoding;
+extern crate reqwest;
 
 use data_encoding::{HEXLOWER, DecodeError};
 use data_encoding::BASE64;
 use std::collections::HashMap;
-use std::borrow::Borrow;
 
 /*
 Convert lowercase hex to base64
@@ -85,7 +85,17 @@ fn single_byte_xor_decrypt(input: &str) -> Result<String, DecodeError>{
   Ok(String::from_utf8(result).expect("invalid"))
 }
 
+
+fn fetch_url() -> Result<(), Box<dyn std::error::Error>> {
+  let mut res = reqwest::blocking::get("https://cryptopals.com/static/challenge-data/4.txt")?;
+  for s in res.text()?.lines(){
+    println!("{}", s);
+  }
+  Ok(())
+}
+
 fn main() {
+  fetch_url();
 }
 
 #[cfg(test)]
